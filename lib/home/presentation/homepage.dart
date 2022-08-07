@@ -64,26 +64,30 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ],
                 )
-              : FutureBuilder<UserResponseModel>(
-                  future: futureAlbum,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(snapshot.data!.name),
-                          Text(snapshot.data!.job),
-                        ],
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                ),
+              : buildFutureBuilder(),
         ],
       ),
+    );
+  }
+
+  FutureBuilder<UserResponseModel> buildFutureBuilder() {
+    return FutureBuilder<UserResponseModel>(
+      future: futureAlbum,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(snapshot.data!.name),
+              Text(snapshot.data!.job),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
