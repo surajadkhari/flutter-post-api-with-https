@@ -20,9 +20,7 @@ class _HomepageState extends State<Homepage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          futureAlbum == null
-              ? buildColumn(context)
-              : buildFutureBuilder(),
+          futureAlbum == null ? buildColumn(context) : buildFutureBuilder(),
         ],
       ),
     );
@@ -30,47 +28,45 @@ class _HomepageState extends State<Homepage> {
 
   Column buildColumn(BuildContext context) {
     return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: namecontroller,
-                      decoration: InputDecoration(
-                          hintText: "Enter Name",
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: Colors.grey[100]),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: jobnamecontroller,
-                      decoration: InputDecoration(
-                          hintText: "Enter Job",
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: Colors.grey[100]),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Map<String, dynamic> data = {
-                        "name": namecontroller.text,
-                        "job": jobnamecontroller.text
-                      };
-                      UserRepository().createUser(data);
-                      setState(() {
-                        futureAlbum = UserRepository().createUser(data);
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("data is summited")));
-                    },
-                    child: const Text('Create Data'),
-                  ),
-                ],
-              );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextFormField(
+            controller: namecontroller,
+            decoration: InputDecoration(
+                hintText: "Enter Name",
+                border: InputBorder.none,
+                filled: true,
+                fillColor: Colors.grey[100]),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextFormField(
+            controller: jobnamecontroller,
+            decoration: InputDecoration(
+                hintText: "Enter Job",
+                border: InputBorder.none,
+                filled: true,
+                fillColor: Colors.grey[100]),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Map<String, dynamic> data = {
+              "name": namecontroller.text,
+              "job": jobnamecontroller.text
+            };
+            UserRepository().createUser(data);
+            setState(() {
+              futureAlbum = UserRepository().createUser(data);
+            });
+          },
+          child: const Text('Create Data'),
+        ),
+      ],
+    );
   }
 
   FutureBuilder<UserResponseModel> buildFutureBuilder() {
@@ -78,12 +74,13 @@ class _HomepageState extends State<Homepage> {
       future: futureAlbum,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(snapshot.data!.name),
-              Text(snapshot.data!.job),
-            ],
+          return Center(
+            child: Column(
+              children: [
+                Text(snapshot.data!.name),
+                Text(snapshot.data!.job),
+              ],
+            ),
           );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
