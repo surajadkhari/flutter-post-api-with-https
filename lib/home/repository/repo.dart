@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:flutter_http_post/core/api_constant.dart';
-import 'package:flutter_http_post/home/data/user_response_model.dart';
 import 'package:http/http.dart';
 import '../../core/api_client.dart';
+import '../../core/api_constant.dart';
+import '../data/user_response_model.dart';
 
 class UserRepository {
   Future<UserResponseModel> createUser(Map<String, dynamic> userModel) async {
@@ -12,7 +11,6 @@ class UserRepository {
     if (result.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
-      log(result.body);
       return UserResponseModel.fromJson(jsonDecode(result.body));
     } else {
       // If the server did not return a 201 CREATED response,
