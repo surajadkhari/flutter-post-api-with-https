@@ -22,52 +22,56 @@ class _HomepageState extends State<Homepage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           futureAlbum == null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextFormField(
-                        controller: namecontroller,
-                        decoration: InputDecoration(
-                            hintText: "Enter Name",
-                            border: InputBorder.none,
-                            filled: true,
-                            fillColor: Colors.grey[100]),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextFormField(
-                        controller: jobnamecontroller,
-                        decoration: InputDecoration(
-                            hintText: "Enter Job",
-                            border: InputBorder.none,
-                            filled: true,
-                            fillColor: Colors.grey[100]),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Map<String, dynamic> data = {
-                          "name": namecontroller.text,
-                          "job": jobnamecontroller.text
-                        };
-                        UserRepository().createUser(data);
-                        setState(() {
-                          futureAlbum = UserRepository().createUser(data);
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("data is summited")));
-                      },
-                      child: const Text('Create Data'),
-                    ),
-                  ],
-                )
+              ? buildColumn(context)
               : buildFutureBuilder(),
         ],
       ),
     );
+  }
+
+  Column buildColumn(BuildContext context) {
+    return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      controller: namecontroller,
+                      decoration: InputDecoration(
+                          hintText: "Enter Name",
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.grey[100]),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      controller: jobnamecontroller,
+                      decoration: InputDecoration(
+                          hintText: "Enter Job",
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.grey[100]),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Map<String, dynamic> data = {
+                        "name": namecontroller.text,
+                        "job": jobnamecontroller.text
+                      };
+                      UserRepository().createUser(data);
+                      setState(() {
+                        futureAlbum = UserRepository().createUser(data);
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("data is summited")));
+                    },
+                    child: const Text('Create Data'),
+                  ),
+                ],
+              );
   }
 
   FutureBuilder<UserResponseModel> buildFutureBuilder() {
