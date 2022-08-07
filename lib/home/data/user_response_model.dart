@@ -1,7 +1,7 @@
 class UserResponseModel {
   final String name;
   final String job;
-  final int id;
+  final String id;
   final DateTime createdAt;
 
   UserResponseModel(

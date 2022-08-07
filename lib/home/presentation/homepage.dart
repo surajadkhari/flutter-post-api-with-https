@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_http_post/home/presentation/flutter_doc.dart';
 
+import '../data/user_response_model.dart';
 import '../repository/repo.dart';
 
 class Homepage extends StatefulWidget {
@@ -11,8 +11,9 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  Future<Album>? futureAlbum;
-  final TextEditingController controller = TextEditingController();
+  Future<UserResponseModel>? futureAlbum;
+  final TextEditingController namecontroller = TextEditingController();
+  final TextEditingController jobnamecontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class _HomepageState extends State<Homepage> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
-                        controller: controller,
+                        controller: namecontroller,
                         decoration: InputDecoration(
                             hintText: "Enter Name",
                             border: InputBorder.none,
@@ -35,28 +36,50 @@ class _HomepageState extends State<Homepage> {
                             fillColor: Colors.grey[100]),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: jobnamecontroller,
+                        decoration: InputDecoration(
+                            hintText: "Enter Job",
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.grey[100]),
+                      ),
+                    ),
                     ElevatedButton(
                       onPressed: () {
-                        Map<String, dynamic> data = {"title": controller.text};
+                        Map<String, dynamic> data = {
+                          "name": namecontroller.text,
+                          "job": jobnamecontroller.text
+                        };
                         UserRepository().createUser(data);
                         setState(() {
                           futureAlbum = UserRepository().createUser(data);
                         });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("data is summited")));
                       },
                       child: const Text('Create Data'),
                     ),
                   ],
                 )
-              : FutureBuilder<Album>(
+              : FutureBuilder<UserResponseModel>(
                   future: futureAlbum,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return Center(child: Text(snapshot.data!.title));
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(snapshot.data!.name),
+                          Text(snapshot.data!.job),
+                        ],
+                      );
                     } else if (snapshot.hasError) {
                       return Text('${snapshot.error}');
                     }
 
-                    return const CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   },
                 ),
         ],
