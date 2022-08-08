@@ -22,14 +22,18 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          futureAlbum == null ? buildColumn(context) : buildFutureBuilder(),
-        ],
+      body: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            futureAlbum == null ? buildColumn(context) : buildFutureBuilder(),
+          ],
+        ),
       ),
     );
   }
@@ -78,10 +82,12 @@ class _HomepageState extends State<Homepage> {
               "name": namecontroller.text,
               "job": jobnamecontroller.text
             };
-            UserRepository().createUser(data);
-            setState(() {
-              futureAlbum = UserRepository().createUser(data);
-            });
+            if (_formKey.currentState!.validate()) {
+              UserRepository().createUser(data);
+              setState(() {
+                futureAlbum = UserRepository().createUser(data);
+              });
+            }
           },
           child: const Text('Create Data'),
         ),
@@ -102,6 +108,7 @@ class _HomepageState extends State<Homepage> {
                 Text(snapshot.data!.name),
                 Text(snapshot.data!.job),
                 Text(dateTime),
+                Text(snapshot.data!.id),
               ],
             ),
           );
