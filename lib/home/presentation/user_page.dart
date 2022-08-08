@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import '../data/user_response_model.dart';
 
 class UserPage extends StatelessWidget {
-  UserPage({Key? key, required this.futureAlbum}) : super(key: key);
-  Future<UserResponseModel>? futureAlbum;
+  UserPage({Key? key, required this.data}) : super(key: key);
+  Future<UserResponseModel>? data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +12,7 @@ class UserPage extends StatelessWidget {
           title: const Text("User Page"),
         ),
         body: FutureBuilder<UserResponseModel>(
-          future: futureAlbum,
+          future: data,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final dateTime =

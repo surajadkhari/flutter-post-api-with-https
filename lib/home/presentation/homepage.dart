@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../data/user_response_model.dart';
 import '../repository/repo.dart';
-import 'package:intl/intl.dart';
 
 import 'user_page.dart';
 
@@ -14,7 +13,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  Future<UserResponseModel>? futureAlbum;
+  Future<UserResponseModel>? futureuser;
   final TextEditingController namecontroller = TextEditingController();
   final TextEditingController jobnamecontroller = TextEditingController();
   @override
@@ -85,15 +84,18 @@ class _HomepageState extends State<Homepage> {
             };
             if (_formKey.currentState!.validate()) {
               // await UserRepository().createUser(data);
+              final result = UserRepository().createUser(data);
               setState(() {
-                futureAlbum = UserRepository().createUser(data);
+                futureuser = result;
               });
+              // WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
               Navigator.push(
                   context,
                   CupertinoPageRoute(
                       builder: ((context) => UserPage(
-                            futureAlbum: futureAlbum,
+                            data: futureuser,
                           ))));
+              // });
             }
           },
           child: const Text('Create Data'),
@@ -101,6 +103,4 @@ class _HomepageState extends State<Homepage> {
       ],
     );
   }
-
- 
 }
