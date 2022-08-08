@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/user_response_model.dart';
 import '../repository/repo.dart';
+import 'package:intl/intl.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -74,11 +75,14 @@ class _HomepageState extends State<Homepage> {
       future: futureAlbum,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          final dateTime =
+              DateFormat("dd MMM yyyy").format(snapshot.data!.createdAt);
           return Center(
             child: Column(
               children: [
                 Text(snapshot.data!.name),
                 Text(snapshot.data!.job),
+                Text(dateTime),
               ],
             ),
           );

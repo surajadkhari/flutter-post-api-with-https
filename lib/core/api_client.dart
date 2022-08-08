@@ -8,8 +8,8 @@ class Apiclient {
       required Map<String, dynamic> data,
       String type = "get"}) async {
     final response = type == "get"
-        ? http.get(Uri.parse(path))
-        : http.post(Uri.parse(path),
+        ? await http.get(Uri.parse(path))
+        : await http.post(Uri.parse(path),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
