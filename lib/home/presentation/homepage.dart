@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../data/user_response_model.dart';
 import '../repository/repo.dart';
 import 'package:intl/intl.dart';
+
+import 'user_page.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -30,9 +33,7 @@ class _HomepageState extends State<Homepage> {
         key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            futureAlbum == null ? buildColumn(context) : buildFutureBuilder(),
-          ],
+          children: [buildColumn(context)],
         ),
       ),
     );
@@ -77,16 +78,22 @@ class _HomepageState extends State<Homepage> {
           ),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             Map<String, dynamic> data = {
               "name": namecontroller.text,
               "job": jobnamecontroller.text
             };
             if (_formKey.currentState!.validate()) {
-              UserRepository().createUser(data);
+              // await UserRepository().createUser(data);
               setState(() {
                 futureAlbum = UserRepository().createUser(data);
               });
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: ((context) => UserPage(
+                            futureAlbum: futureAlbum,
+                          ))));
             }
           },
           child: const Text('Create Data'),
@@ -95,29 +102,5 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  FutureBuilder<UserResponseModel> buildFutureBuilder() {
-    return FutureBuilder<UserResponseModel>(
-      future: futureAlbum,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final dateTime =
-              DateFormat("dd MMM yyyy").format(snapshot.data!.createdAt);
-          return Center(
-            child: Column(
-              children: [
-                Text(snapshot.data!.name),
-                Text(snapshot.data!.job),
-                Text(dateTime),
-                Text(snapshot.data!.id),
-              ],
-            ),
-          );
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
-  }
+ 
 }
