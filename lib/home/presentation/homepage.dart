@@ -14,6 +14,13 @@ class _HomepageState extends State<Homepage> {
   Future<UserResponseModel>? futureAlbum;
   final TextEditingController namecontroller = TextEditingController();
   final TextEditingController jobnamecontroller = TextEditingController();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    namecontroller.clear();
+    jobnamecontroller.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +42,12 @@ class _HomepageState extends State<Homepage> {
           padding: const EdgeInsets.all(16.0),
           child: TextFormField(
             controller: namecontroller,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter name';
+              }
+              return null;
+            },
             decoration: InputDecoration(
                 hintText: "Enter Name",
                 border: InputBorder.none,
@@ -45,6 +58,12 @@ class _HomepageState extends State<Homepage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter job';
+              }
+              return null;
+            },
             controller: jobnamecontroller,
             decoration: InputDecoration(
                 hintText: "Enter Job",
