@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_http_post/home/data/user_model.dart';
 import '../data/user_response_model.dart';
 import '../repository/repo.dart';
 
@@ -78,13 +79,15 @@ class _HomepageState extends State<Homepage> {
         ),
         ElevatedButton(
           onPressed: () async {
-            Map<String, dynamic> data = {
-              "name": namecontroller.text,
-              "job": jobnamecontroller.text
-            };
+            // Map<String, dynamic> data = {
+            //   "name": namecontroller.text,
+            //   "job": jobnamecontroller.text
+            // };
+
             if (_formKey.currentState!.validate()) {
               // await UserRepository().createUser(data);
-              final result = UserRepository().createUser(data);
+              final result = UserRepository().createUser(UserRequestModel(
+                  name: namecontroller.text, job: jobnamecontroller.text));
               setState(() {
                 futureuser = result;
               });

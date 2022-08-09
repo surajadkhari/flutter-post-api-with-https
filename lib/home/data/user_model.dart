@@ -1,8 +1,8 @@
-class UserModel {
+class UserRequestModel {
   final String name;
   final String job;
 
-  UserModel({required this.name, required this.job});
+  UserRequestModel({required this.name, required this.job});
 
     Map<String, dynamic> toJson() {
     return {
