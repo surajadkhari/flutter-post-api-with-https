@@ -19,7 +19,6 @@ class _HomepageState extends State<Homepage> {
   final TextEditingController jobnamecontroller = TextEditingController();
   @override
   void dispose() {
-    // TODO: implement dispose
     namecontroller.clear();
     jobnamecontroller.clear();
     super.dispose();
@@ -86,8 +85,9 @@ class _HomepageState extends State<Homepage> {
 
             if (_formKey.currentState!.validate()) {
               // await UserRepository().createUser(data);
-              final result = UserRepository().createUser(UserRequestModel(
-                  name: namecontroller.text, job: jobnamecontroller.text));
+              var userRequestModel = UserRequestModel(
+                  name: namecontroller.text, job: jobnamecontroller.text);
+              final result = UserRepository().createUser(userRequestModel);
               setState(() {
                 futureuser = result;
               });
