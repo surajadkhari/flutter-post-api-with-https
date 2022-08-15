@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_http_post/home/data/model/user_model.dart';
-import 'package:flutter_http_post/home/data/model/user_response_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../controllers/user_controllers.dart';
@@ -15,7 +14,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  Future<UserResponseModel>? futureuser;
+  bool isLoading = false;
   final TextEditingController namecontroller = TextEditingController();
   final TextEditingController jobnamecontroller = TextEditingController();
   @override
@@ -58,6 +57,7 @@ class _HomepageState extends State<Homepage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: TextFormField(
+            textInputAction: TextInputAction.next,
             controller: namecontroller,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -75,6 +75,7 @@ class _HomepageState extends State<Homepage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: TextFormField(
+            textInputAction: TextInputAction.done,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter job';
@@ -93,46 +94,36 @@ class _HomepageState extends State<Homepage> {
           builder: ((context, ref, child) {
             final postUser = ref.watch(createuserProvider.notifier);
             return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: AspectRatio(
-                aspectRatio: screenWidth * 0.6 / screenHeight * 20,
-                child: ElevatedButton(
-                    onPressed: () async {
-                      // Map<String, dynamic> data = {
-                      //   "name": namecontroller.text,
-                      //   "job": jobnamecontroller.text
-                      // };
-
-                      if (_formKey.currentState!.validate()) {
-                        UserRequestModel userRequestModel = UserRequestModel(
-                          name: namecontroller.text,
-                          job: jobnamecontroller.text,
-                        );
-                        await postUser.postUser(userRequestModel);
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: ((context) => const UserPage()),
-                          ),
-                        );
-
-                        // setState(() {
-                        //   futureuser = result;
-                        // });
-                        // WidgetsBinding.instance
-                        //     .addPersistentFrameCallback((timeStamp) {
-                        // Navigator.push(
-                        //   context,
-                        //   CupertinoPageRoute(
-                        //     builder: ((context) => const UserPage()),
-                        //   ),
-                        // );
-                        // });
-                      }
-                    },
-                    child: const Text('Submit')),
-              ),
-            );
+                padding: const EdgeInsets.all(16.0),
+                child: isLoading
+                    ? const CircularProgressIndicator()
+                    : AspectRatio(
+                        aspectRatio: screenWidth * 0.6 / screenHeight * 20,
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                UserRequestModel userRequestModel =
+                                    UserRequestModel(
+                                  name: namecontroller.text,
+                                  job: jobnamecontroller.text,
+                                );
+                                await postUser.postUser(userRequestModel);
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: ((context) => const UserPage()),
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Text('Submit')),
+                      ));
           }),
         ),
       ],

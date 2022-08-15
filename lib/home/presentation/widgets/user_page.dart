@@ -24,17 +24,19 @@ class UserPage extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                data.name,
-                style: textStyle,
-              ),
-              Text(
-                dateTime,
-                style: textStyle,
-              ),
-              Text(
-                data.id,
-                style: textStyle,
+              ListTile(
+                subtitle: Text(
+                  dateTime,
+                  style: textStyle,
+                ),
+                title: Text(
+                  data.name,
+                  style: textStyle,
+                ),
+                trailing: Text(
+                  "ID ${data.id}",
+                  style: textStyle,
+                ),
               ),
             ],
           ),
