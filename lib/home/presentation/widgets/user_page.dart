@@ -1,49 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_http_post/home/data/model/user_response_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class UserPage extends StatelessWidget {
-  const UserPage({Key? key, required this.data}) : super(key: key);
-  final Future<UserResponseModel>? data;
+import '../controllers/user_controllers.dart';
+
+class UserPage extends ConsumerWidget {
+  const UserPage({
+    Key? key,
+  }) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(createuserProvider);
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: const Text("User Page"),
-        ),
-        body: FutureBuilder<UserResponseModel>(
-          future: data,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final result = snapshot.data!;
-              final dateTime =
-                  DateFormat("dd MMM yyyy").format(snapshot.data!.createdAt);
-              return Center(
-                child: Column(
-                  children: [
-                    Card(
-                      child: ListTile(
-                        leading: Text("Id ${result.id}"),
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Name:${result.name}"),
-                            Text("job:${result.job}"),
-                          ],
-                        ),
-                        trailing: Text(dateTime),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
-        ));
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text("User Page"),
+      ),
+      body: data.when(data: (data) {
+        final dateTime = DateFormat("dd MMM yyyy").format(data.createdAt);
+        const textStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                data.name,
+                style: textStyle,
+              ),
+              Text(
+                dateTime,
+                style: textStyle,
+              ),
+              Text(
+                data.id,
+                style: textStyle,
+              ),
+            ],
+          ),
+        );
+      }, error: (error, stackTrace) {
+        return const Text("err");
+      }, loading: (() {
+        return const CircularProgressIndicator();
+      })),
+      //
+    );
   }
 }

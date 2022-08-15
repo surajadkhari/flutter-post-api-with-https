@@ -11,7 +11,9 @@ class CreateUserNotifier extends StateNotifier<AsyncValue<UserResponseModel>> {
     final result = await userReposioty.createUser(userRequestModel);
     return result.fold(
       (l) => state = AsyncValue.error(l),
-      (r) => state = AsyncValue.data(r),
+      (r) {
+        return state = AsyncValue.data(r);
+      },
     );
   }
 }

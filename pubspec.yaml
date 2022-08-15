@@ -39,6 +39,7 @@ dependencies:
   dartz: ^0.10.1
   riverpod: ^1.0.3
   flutter_riverpod: ^1.0.4
+  google_fonts: ^3.0.1
 
 
 dev_dependencies:

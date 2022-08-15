@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_http_post/home/data/model/user_model.dart';
 import 'package:flutter_http_post/home/data/model/user_response_model.dart';
-import 'package:flutter_http_post/home/repository/repo.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../controllers/user_controllers.dart';
 import 'user_page.dart';
 
 class Homepage extends StatefulWidget {
@@ -83,32 +84,45 @@ class _HomepageState extends State<Homepage> {
                 fillColor: Colors.grey[100]),
           ),
         ),
-        ElevatedButton(
-          onPressed: () async {
-            // Map<String, dynamic> data = {
-            //   "name": namecontroller.text,
-            //   "job": jobnamecontroller.text
-            // };
+        Consumer(
+          builder: ((context, ref, child) {
+            final postUser = ref.watch(createuserProvider.notifier);
+            return ElevatedButton(
+                onPressed: () async {
+                  // Map<String, dynamic> data = {
+                  //   "name": namecontroller.text,
+                  //   "job": jobnamecontroller.text
+                  // };
 
-            if (_formKey.currentState!.validate()) {
-              // await UserRepository().createUser(data);
-              var userRequestModel = UserRequestModel(
-                  name: namecontroller.text, job: jobnamecontroller.text);
-              final result = UserRepository().createUser(userRequestModel);
-              setState(() {
-                futureuser = result;
-              });
-              // WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: ((context) => UserPage(
-                            data: futureuser,
-                          ))));
-              // });
-            }
-          },
-          child: const Text('Create Data'),
+                  if (_formKey.currentState!.validate()) {
+                    UserRequestModel userRequestModel = UserRequestModel(
+                      name: namecontroller.text,
+                      job: jobnamecontroller.text,
+                    );
+                    await postUser.postUser(userRequestModel);
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: ((context) => const UserPage()),
+                      ),
+                    );
+
+                    // setState(() {
+                    //   futureuser = result;
+                    // });
+                    // WidgetsBinding.instance
+                    //     .addPersistentFrameCallback((timeStamp) {
+                    // Navigator.push(
+                    //   context,
+                    //   CupertinoPageRoute(
+                    //     builder: ((context) => const UserPage()),
+                    //   ),
+                    // );
+                    // });
+                  }
+                },
+                child: const Text('Create Data'));
+          }),
         ),
       ],
     );

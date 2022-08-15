@@ -5,7 +5,9 @@ import 'package:riverpod/riverpod.dart';
 
 class Apiclient {
   Future request(
-      {required String path,required Map<String, dynamic> data, String type = "get"}) async {
+      {required String path,
+       Map<String, dynamic> data=const{},
+      String type = "get"}) async {
     final response = type == "get"
         ? await http.get(Uri.parse(path))
         : await http.post(Uri.parse(path),
@@ -19,5 +21,5 @@ class Apiclient {
 }
 
 final apiClientProvider = Provider<Apiclient>((ref) {
-  return  Apiclient();
+  return Apiclient();
 });

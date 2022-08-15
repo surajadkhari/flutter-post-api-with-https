@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 abstract class UserReposioty {
   Future<Either<AppError, UserResponseModel>> createUser(
       UserRequestModel userRequestModel);
-  Future<UserResponseModel> fetchUser();
+  Future<Either<AppError, UserResponseModel>> fetchUser();
 }
 
 class UserReposiotyImpl implements UserReposioty {
@@ -16,9 +16,11 @@ class UserReposiotyImpl implements UserReposioty {
   UserReposiotyImpl({required this.userRemoteDataSource});
   @override
   Future<Either<AppError, UserResponseModel>> createUser(
-      UserRequestModel userRequestModel) async {
+    UserRequestModel userRequestModel,
+  ) async {
     try {
       final result = await userRemoteDataSource.createUser(userRequestModel);
+
       return Right(result);
     } catch (e) {
       return Left(AppError(e.toString()));
@@ -26,9 +28,14 @@ class UserReposiotyImpl implements UserReposioty {
   }
 
   @override
-  Future<UserResponseModel> fetchUser() {
-    // TODO: implement fetchUser
-    throw UnimplementedError();
+  Future<Either<AppError, UserResponseModel>> fetchUser() async {
+    try {
+      final result = await userRemoteDataSource.fetchUser();
+
+      return Right(result);
+    } catch (e) {
+      return Left(AppError(e.toString()));
+    }
   }
 }
 
