@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_http_post/home/data/model/user_model.dart';
 import 'package:flutter_http_post/home/data/model/user_response_model.dart';
-import '../repository/repo.dart';
+import 'package:flutter_http_post/home/repository/repo.dart';
 
 import 'user_page.dart';
 

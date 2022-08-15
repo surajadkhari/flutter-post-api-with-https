@@ -1,22 +1,27 @@
-import 'dart:convert';
-
-import 'package:flutter_http_post/core/api_client.dart';
-import 'package:flutter_http_post/core/api_constant.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter_http_post/core/app_error.dart';
+import 'package:flutter_http_post/home/data/data_source/user_data_source.dart';
 import 'package:flutter_http_post/home/data/model/user_model.dart';
 import 'package:flutter_http_post/home/data/model/user_response_model.dart';
 
-abstract class UserRemoteDataSource {
-  Future<UserResponseModel> createUser(UserRequestModel userRequestModel);
+abstract class UserReposioty {
+  Future<Either<AppError, UserResponseModel>> createUser(
+      UserRequestModel userRequestModel);
   Future<UserResponseModel> fetchUser();
 }
 
-class UserRemoteDataSourceImp extends UserRemoteDataSource {
+class UserReposiotyImpl implements UserReposioty {
+  final UserRemoteDataSource _userRemoteDataSource;
+  UserReposiotyImpl(this._userRemoteDataSource);
   @override
-  Future<UserResponseModel> createUser(
+  Future<Either<AppError, UserResponseModel>> createUser(
       UserRequestModel userRequestModel) async {
-    final result = await Apiclient()
-        .request(path: endpoint, data: userRequestModel.toJson(), type: "post");
-    return UserResponseModel.fromJson(jsonDecode(result.body));
+    try {
+      final result = await _userRemoteDataSource.createUser(userRequestModel);
+      return Right(result);
+    } catch (e) {
+      return Left(AppError(e.toString()));
+    }
   }
 
   @override
