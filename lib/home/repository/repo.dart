@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter_http_post/home/data/user_model.dart';
 import 'package:http/http.dart';
 import '../../core/api_client.dart';
@@ -13,6 +14,7 @@ class UserRepository {
     if (result.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
+      log(result.body);
       return UserResponseModel.fromJson(jsonDecode(result.body));
     } else {
       // If the server did not return a 201 CREATED response,
