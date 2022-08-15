@@ -24,15 +24,22 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
+  void keyboradMiss() {
+    return FocusScope.of(context).unfocus();
+  }
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [buildColumn(context)],
+    return GestureDetector(
+      onTap: keyboradMiss,
+      child: Scaffold(
+        body: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [buildColumn(context)],
+          ),
         ),
       ),
     );
