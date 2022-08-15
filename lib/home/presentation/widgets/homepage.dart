@@ -32,6 +32,9 @@ class _HomepageState extends State<Homepage> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: keyboradMiss,
       child: Scaffold(
@@ -39,17 +42,19 @@ class _HomepageState extends State<Homepage> {
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [buildColumn(context)],
+            children: [buildColumn(context, screenWidth, screenHeight)],
           ),
         ),
       ),
     );
   }
 
-  Column buildColumn(BuildContext context) {
+  Column buildColumn(
+      BuildContext context, double screenWidth, double screenHeight) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: TextFormField(
@@ -87,41 +92,47 @@ class _HomepageState extends State<Homepage> {
         Consumer(
           builder: ((context, ref, child) {
             final postUser = ref.watch(createuserProvider.notifier);
-            return ElevatedButton(
-                onPressed: () async {
-                  // Map<String, dynamic> data = {
-                  //   "name": namecontroller.text,
-                  //   "job": jobnamecontroller.text
-                  // };
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: AspectRatio(
+                aspectRatio: screenWidth * 0.6 / screenHeight * 20,
+                child: ElevatedButton(
+                    onPressed: () async {
+                      // Map<String, dynamic> data = {
+                      //   "name": namecontroller.text,
+                      //   "job": jobnamecontroller.text
+                      // };
 
-                  if (_formKey.currentState!.validate()) {
-                    UserRequestModel userRequestModel = UserRequestModel(
-                      name: namecontroller.text,
-                      job: jobnamecontroller.text,
-                    );
-                    await postUser.postUser(userRequestModel);
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: ((context) => const UserPage()),
-                      ),
-                    );
+                      if (_formKey.currentState!.validate()) {
+                        UserRequestModel userRequestModel = UserRequestModel(
+                          name: namecontroller.text,
+                          job: jobnamecontroller.text,
+                        );
+                        await postUser.postUser(userRequestModel);
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: ((context) => const UserPage()),
+                          ),
+                        );
 
-                    // setState(() {
-                    //   futureuser = result;
-                    // });
-                    // WidgetsBinding.instance
-                    //     .addPersistentFrameCallback((timeStamp) {
-                    // Navigator.push(
-                    //   context,
-                    //   CupertinoPageRoute(
-                    //     builder: ((context) => const UserPage()),
-                    //   ),
-                    // );
-                    // });
-                  }
-                },
-                child: const Text('Create Data'));
+                        // setState(() {
+                        //   futureuser = result;
+                        // });
+                        // WidgetsBinding.instance
+                        //     .addPersistentFrameCallback((timeStamp) {
+                        // Navigator.push(
+                        //   context,
+                        //   CupertinoPageRoute(
+                        //     builder: ((context) => const UserPage()),
+                        //   ),
+                        // );
+                        // });
+                      }
+                    },
+                    child: const Text('Submit')),
+              ),
+            );
           }),
         ),
       ],
