@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_http_post/home/data/model/user_response_model.dart';
 import 'package:intl/intl.dart';
-import '../data/user_response_model.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({Key? key, required this.data}) : super(key: key);

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter_http_post/home/data/user_model.dart';
+import 'package:flutter_http_post/home/data/model/user_model.dart';
 import 'package:http/http.dart';
 import '../../core/api_client.dart';
 import '../../core/api_constant.dart';
-import '../data/user_response_model.dart';
+import '../data/model/user_response_model.dart';
 
 class UserRepository {
   Future<UserResponseModel> createUser(
