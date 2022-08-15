@@ -1,6 +1,7 @@
 // import 'dart:convert';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:riverpod/riverpod.dart';
 
 class Apiclient {
   Future request(
@@ -16,3 +17,7 @@ class Apiclient {
     return response;
   }
 }
+
+final apiClientProvider = Provider<Apiclient>((ref) {
+  return  Apiclient();
+});

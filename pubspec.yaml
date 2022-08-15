@@ -37,6 +37,8 @@ dependencies:
   http: ^0.13.5
   intl: ^0.17.0
   dartz: ^0.10.1
+  riverpod: ^1.0.3
+  flutter_riverpod: ^1.0.4
 
 
 dev_dependencies:
