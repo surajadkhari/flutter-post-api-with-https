@@ -25,7 +25,10 @@ class _HomepageState extends State<Homepage> {
   }
 
   void keyboradMiss() {
-    return FocusScope.of(context).unfocus();
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      return currentFocus.unfocus();
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
