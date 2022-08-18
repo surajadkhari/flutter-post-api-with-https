@@ -24,7 +24,7 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
-  void keyboradMiss() {
+  void keyboardMiss() {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
       return currentFocus.unfocus();
@@ -38,7 +38,7 @@ class _HomepageState extends State<Homepage> {
     var screenHeight = MediaQuery.of(context).size.height;
 
     return GestureDetector(
-      onTap: keyboradMiss,
+      onTap: keyboardMiss,
       child: Scaffold(
         body: Form(
           key: _formKey,
